@@ -12,14 +12,20 @@ login_manager = LoginManager()
 
 def create_app(config_name='default'):
     if getattr(sys, 'frozen', False):
+        # Running as PyInstaller bundle
         base_path = sys._MEIPASS
+        template_folder = os.path.join(base_path, 'application', 'templates')
+        static_folder = os.path.join(base_path, 'application', 'static')
     else:
+        # Running in development
         base_path = os.path.abspath(os.path.dirname(__file__))
+        template_folder = os.path.join(base_path, 'templates')
+        static_folder = os.path.join(base_path, 'static')
         
     app = Flask(
         __name__,
-        static_folder=os.path.join(base_path, 'static'),
-        template_folder=os.path.join(base_path, 'templates'),
+        static_folder=static_folder,
+        template_folder=template_folder,
     )
     app.config.from_object(config.get(config_name, DevelopmentConfig))
 
