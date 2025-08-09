@@ -1,0 +1,138 @@
+:root {
+    /* Base Colors */
+    --base-color: #11121a;
+    --sidebar-color: #11121a;
+    --hover-color: #222533;
+    --line-color: #42434a;
+    --text-color: #e6e6ef;
+    --secondary-text-color: #b0b3c1;
+    --active-color: #0d6efd;
+
+    /* Bootstrap Overrides */
+    --bs-border-color: var(--line-color);
+}
+
+/* ========== Layout ========== */
+html, body {
+  background: radial-gradient(ellipse at 20% 0%, var(--base-color), #101318 70%) fixed;
+  color: var(--color-text);
+  font-family:'Inter','Atkinson Hyperlegible',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;
+}
+
+body {
+    background-color: var(--base-color);
+    color: var(--text-color);
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+#sidebar {
+  background:#11121a;
+  width:280px;
+  padding:5px 1rem;
+  border-right:1px solid #42434a;
+  transition:300ms ease;
+  overflow:hidden;
+  text-wrap:nowrap;
+
+  grid-row:1 / -1;
+  position:sticky;
+  top:0;
+  min-height:100vh;
+  height:auto;
+}
+
+#sidebar.close { width:60px; padding:5px; }
+
+#sidebar > ul > li:first-child {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+/* ========== Links ========== */
+#sidebar a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0.75rem;
+}
+
+#sidebar a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+#sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    margin-bottom: .5rem;
+    gap: 1rem;
+
+    span {
+        flex-grow: 1;
+    }
+}
+
+#sidebar.close span {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms, visibility 200ms;
+}
+
+#sidebar .nav-link.active {
+    background-color: transparent;
+    color: var(--active-color);
+
+    svg {
+        fill: var(--active-color);
+    }
+}
+
+#sidebar .nav-link:hover, #toggle-sidebar:hover {
+    background-color: var(--hover-color);
+}
+
+/* ========== Sidebar Toggle Button ========== */
+#toggle-sidebar {
+    padding: 0.75rem;
+    cursor: pointer;
+}
+
+#toggle-sidebar svg {
+    transition: rotate 150ms ease;
+}
+
+.rotate svg:last-child{
+    rotate: 180deg;
+}
+
+/* ========== SVG ========== */
+svg {
+    flex-shrink: 0;
+    fill: var(--text-color);
+}
+
+/* ========== Dropdown Button ========== */
+
+.dropdown-btn svg {
+    transition: rotate 150ms ease;
+}
+
+#sidebar ul.submenu {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: 300ms ease-in-out;
+    li a {
+        padding-left: 2em;
+    }
+    
+    > div {
+        overflow: hidden;
+    }
+}
+
+
+#sidebar ul.submenu.show {
+    grid-template-rows: 1fr;
+}

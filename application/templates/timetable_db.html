@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/timetable.css') }}">
+<link rel=stylesheet href="{{ url_for('static', filename='css/database.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <!-- Search and filter options -->
+    <div class="d-flex flex-column h-100">
+        <h1>Saved Timetable</h1>
+        <div class="position-sticky py-3 shadow-lg z-3 bg-light border rounded mb-5" style="top:1rem;">
+            <div class="row g-0">
+                <div class="col-9">
+                </div>
+
+                <div class="col-3 border-start d-flex justify-content-between align-items-center">
+                    <div class="p-3">
+                        <h5 class="text-dark mb-0"><span id="timetableCount">0</span> Timetables Found</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <!-- Displaying all of the timetables in the database -->
+        <div class="flex-grow-1">
+            <div id="timetableList" class="row g-3"></div>
+        </div>
+
+
+        <div class="modal fade" id="modal" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-pencil-square"></i>
+                            View Timetable:
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <select id="timetable-branch-select" class="form-select" style="max-width:240px;"></select>
+                        <div id="timetable-container" class="table-responsive"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="deleteBtn" type="button" class="btn btn-danger">Delete Timetable</button>
+                        <button id="activeBtn" type="button" class="btn btn-success">Set Active</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- <script src="{{ url_for('static', filename='js/timetable.js') }}"></script> -->
+    <script type="module" src="{{ url_for('static', filename='js/timetable_db.js') }}"></script>
+{% endblock %}

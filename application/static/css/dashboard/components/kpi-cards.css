@@ -1,0 +1,73 @@
+#kpi-cards .card {
+  flex:1 1 240px;
+  max-width:260px;
+  background:rgba(255,255,255,0.05);
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  box-shadow:0 0 12px rgba(0,255,255,0.15);
+  text-align:center;
+  padding:1.5rem 1rem;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+#kpi-cards .card:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 25px rgba(0,255,255,0.4);
+}
+#kpi-cards .card * { color:#fff !important; }
+#kpi-cards .card,
+#kpi-cards .card.kpi-neon {
+  position:relative;
+  min-width:240px;
+  flex:1 1 260px;
+  padding:1.15rem 1.25rem 1.25rem;
+  border-radius:18px !important;
+  background:linear-gradient(140deg,#1e2631,#141a21 55%,#12171d);
+  border:1px solid rgba(255,255,255,0.10)!important;
+  box-shadow:0 2px 4px -1px rgba(0,0,0,.55),0 10px 26px -14px rgba(0,0,0,.65);
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  overflow:hidden;
+  isolation:isolate;
+  transition:transform .45s cubic-bezier(.22,.9,.43,1),box-shadow .35s ease,border-color .35s ease,background .6s ease;
+  text-align:center;
+}
+#kpi-cards .card::after { content:none!important; }
+#kpi-cards .card:hover {
+  transform:translateY(-6px);
+  border-color:rgba(var(--color-accent-rgb), .65)!important;
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.7),
+             0 0 0 2px rgba(var(--color-accent-rgb), .35),
+             0 0 14px -2px rgba(var(--color-accent-rgb), .55);
+}
+#kpi-cards .card .kpi-label {
+  display:block;
+  font-size:.68rem;
+  letter-spacing:.55px;
+  font-weight:600;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+}
+#kpi-cards .card .kpi-value {
+  font-size:2.4rem;
+  font-weight:700;
+  line-height:1.05;
+  margin:.45rem 0 .35rem;
+  color:#fff;
+  transition:filter .4s ease;
+}
+#kpi-cards .card:hover .kpi-value { filter:drop-shadow(0 0 4px rgba(255,255,255,.35)); }
+#kpi-cards .card .kpi-sub {
+  font-size:.6rem;
+  font-weight:500;
+  letter-spacing:.35px;
+  color:rgba(255,255,255,.65);
+  margin-top:.35rem;
+}
+@media (max-width:920px){
+  #kpi-cards .card { flex:1 1 calc(50% - .9rem); min-width:0; }
+}
+@media (max-width:560px){
+  #kpi-cards .card { flex:1 1 100%; }
+  #kpi-cards .card .kpi-value { font-size:2.05rem; }
+}

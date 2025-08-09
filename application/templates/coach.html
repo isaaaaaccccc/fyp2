@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel=stylesheet href="{{ url_for('static', filename='css/database.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <!-- Search and filter options -->
+    <div class="d-flex flex-column h-100">
+        <h1>Coaches</h1>
+        <div class="position-sticky py-3 shadow-lg z-3 bg-light border rounded mb-5" style="top:1rem;">
+            <div class="row g-0">
+                <div class="col-9">
+                    <form id="coachFilter" class="d-flex justify-content-center align-items-center px-3 h-100">
+                        {{ filter.hidden_tag() }}
+                        <div class="row gy-3 w-100 text-nowrap">
+                            <div class="col-xl-4 col-lg-6">
+                                {{ filter.name.label(class="text-dark fw-bold") }}
+                                {{ filter.name(class="form-control", placeholder='Search by name') }}
+                            </div>
+                            <div class="col-xl-2 col-lg-6">
+                                {{ filter.branch.label(class="text-dark fw-bold") }}
+                                {{ filter.branch(class="form-select") }}
+                            </div>
+                            <div class="col-xl-2 col-lg-4">
+                                {{ filter.position.label(class="text-dark fw-bold") }}
+                                {{ filter.position(class="form-select") }}
+                            </div>
+                            <div class="col-xl-2 col-lg-4">
+                                {{ filter.level.label(class="text-dark fw-bold") }}
+                                {{ filter.level(class="form-select") }}
+                            </div>
+                            <div class="col-xl-2 col-lg-4 mt-auto">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary w-100">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-3 border-start d-flex justify-content-between align-items-center">
+                    <div class="p-3">
+                        <h5 class="text-dark mb-0"><span id="coachCount">{{ coaches|length }}</span> Coaches Found</h5>
+                        <small class="text-muted">Use filters to narrow results</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <!-- Displaying all of the coaches in the database -->
+        <div class="flex-grow-1">
+            <div id="coachList" class="row g-3"></div>
+        </div>
+
+
+        <div class="modal fade" id="modal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-pencil-square"></i>
+                            Edit Coach: <span></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            {{ details.hidden_tag() }}
+                            <div class="row g-3">
+                                <div class="col-lg-5 col-12">
+                                    <h6>
+                                        <i class="bi bi-info-circle"></i> Basic Information
+                                    </h6>
+                                    <div class="mb-3">
+                                        {{ details.editName.label(class="fw-bold") }}
+                                        {{ details.editName(class="form-control") }}
+                                    </div>
+                                    <div class="mb-3">
+                                        {{ details.editResidence.label(class="fw-bold") }}
+                                        {{ details.editResidence(class="form-control") }}
+                                    </div>
+                                    <div>
+                                        {{ details.editPosition.label(class="fw-bold") }}
+                                        {{ details.editPosition(class="form-select") }}
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-7 col-12">
+                                    <h6>
+                                        <i class="bi bi-calendar-check"></i> Schedule Preference
+                                    </h6>
+                                    <div class="mb-3">
+                                        <span class="fw-bold pe-none">Assigned branches</span>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            {% for field in details.editBranch %}
+                                                <div class="checkbox-badge">
+                                                    {{ field() }}
+                                                    {{ field.label(class="fw-semibold px-2 py-1 border border-2 rounded-pill user-select-none") }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <span class="fw-bold pe-none">Preferred Levels</span>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            {% for field in details.editLevel %}
+                                                <div class="checkbox-badge">
+                                                    {{ field() }}
+                                                    {{ field.label(class="fw-semibold border border-2 rounded-pill user-select-none") }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <h6>
+                                            <i class="bi bi-calendar"></i> Off Days
+                                        </h6>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th></th>
+                                                        <th>Mon</th>
+                                                        <th>Tue</th> 
+                                                        <th>Wed</th>
+                                                        <th>Thu</th>
+                                                        <th>Fri</th>
+                                                        <th>Sat</th>
+                                                        <th>Sun</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for row in details.editOffday %}
+                                                        <tr>
+                                                            <td class="align-middle fw-bold">{{ "AM" if loop.index0 == 0 else "PM" }}</td>
+                                                            {% for field in row %}
+                                                                <td class="text-center">
+                                                                    <div class="checkbox-badge">
+                                                                        {{ field() }}
+                                                                        {{ field.label(class="fw-semibold text-nowrap border border-2 rounded-pill user-select-none") }}
+                                                                    </div>
+                                                                </td>
+                                                            {% endfor %}
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="deleteBtn" type="button" class="btn btn-danger">Delete Coach</button>
+                        <button id="saveBtn" type="button" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/coach.js') }}"></script>
+{% endblock %}

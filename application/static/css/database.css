@@ -1,0 +1,57 @@
+.card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-color: #3498db;
+}
+
+.checkbox-badge {
+    display: inline-block;
+    position: relative;
+    input[type="checkbox"] {
+        position: absolute;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+
+    label {
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background-color: #e2e8f0;
+        border-color: hsl(214, 32%, 91%) !important;
+        padding: 0.25rem .5rem;
+        min-width: 4rem;
+        text-align: center;
+    }
+
+    label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        border-color: hsl(215, 32%, 85%) !important;
+    }
+
+    input[type="checkbox"]:checked + label {
+        background-color: hsl(84, 80%, 59%) !important;
+        border-color: hsl(84, 80%, 59%) !important;
+    }
+
+    input[type="checkbox"]:checked + label:hover {
+        border-color: hsl(84, 80%, 45%) !important; 
+    }
+}
+
+.timetable-table {
+    thead th, td, td.session-cell {
+        color: #000;
+        border: var(--bs-border-width) solid #ccc
+    }
+}

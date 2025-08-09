@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel=stylesheet href="{{ url_for('static', filename='css/database.css') }}">
+<link rel=stylesheet href="{{ url_for('static', filename='css/branch.css') }}">
+{% endblock %}
+
+{% block content %}
+    <!-- Search and filter options -->
+    <div class="d-flex flex-column h-100">
+        <h1>Branches</h1>
+        <div class="position-sticky py-3 shadow-lg z-3 bg-light border rounded mb-5" style="top:1rem;">
+            <div class="row g-0">
+                <div class="col-9">
+                    <form id="branchFilter" class="d-flex justify-content-center align-items-center px-3 h-100">
+                        {{ filter.hidden_tag() }}
+                        <div class="row gy-3 w-100 text-nowrap">
+                            <div class="col-xl-5 col-lg-6">
+                                {{ filter.name.label(class="text-dark fw-bold") }}
+                                {{ filter.name(class="form-control", placeholder='Search by name') }}
+                            </div>
+                            <div class="col-xl-4 col-lg-6">
+                                {{ filter.max_classes.label(class="text-dark fw-bold") }}
+                                {{ filter.max_classes(class="form-select") }}
+                            </div>
+                            <div class="col-xl-3 col-lg-4 mt-auto">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary w-100">Clear Filters</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-3 border-start d-flex justify-content-between align-items-center">
+                    <div class="p-3">
+                        <h5 class="text-dark mb-0"><span id="branchCount">{{ branches|length }}</span> Branches Found</h5>
+                        <small class="text-muted">Use filters to narrow results</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <!-- Displaying all branches in the database -->
+        <div class="flex-grow-1">
+            <div id="branchList" class="row g-4">
+                <!-- Branch cards will be populated by JavaScript -->
+                
+                <!-- Add New Branch Card - Always visible -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div id="addBranchCard" class="card branch-add-card h-100 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#addBranchModal">
+                        <div class="text-center py-5">
+                            <i class="bi bi-plus-circle"></i>
+                            <h5 class="mt-3 mb-0">Add New Branch</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Branch Modal -->
+        <div class="modal fade" id="editBranchModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-pencil-square"></i>
+                            Edit Branch: <span id="modalBranchName"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editBranchForm">
+                            <input type="hidden" id="editBranchId">
+                            <div class="mb-4">
+                                {{ form.name.label(class="form-label fw-bold") }}
+                                {{ form.name(class="form-control", id="editName") }}
+                                <div class="invalid-feedback" id="editNameError"></div>
+                            </div>
+                            <div class="mb-4">
+                                {{ form.abbrv.label(class="form-label fw-bold") }}
+                                {{ form.abbrv(class="form-control", id="editAbbrv") }}
+                                <div class="form-text">Maximum 4 characters</div>
+                                <div class="invalid-feedback" id="editAbbrvError"></div>
+                            </div>
+                            <div class="mb-4">
+                                {{ form.max_classes.label(class="form-label fw-bold") }}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="range" class="form-range flex-grow-1 me-3" id="editMaxClasses" min="1" max="10" step="1" value="4">
+                                    <span class="slider-value" id="editMaxClassesValue">4</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="deleteBranchBtn">Delete Branch</button>
+                        <button type="button" class="btn btn-primary" id="saveBranchChangesBtn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Add Branch Modal -->
+        <div class="modal fade" id="addBranchModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">
+                            <i class="bi bi-plus-circle"></i>
+                            Add New Branch
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addBranchForm">
+                            <div class="mb-4">
+                                {{ form.name.label(class="form-label fw-bold") }}
+                                {{ form.name(class="form-control", id="newName") }}
+                                <div class="invalid-feedback" id="newNameError"></div>
+                            </div>
+                            <div class="mb-4">
+                                {{ form.abbrv.label(class="form-label fw-bold") }}
+                                {{ form.abbrv(class="form-control", id="newAbbrv") }}
+                                <div class="form-text">Maximum 4 characters</div>
+                                <div class="invalid-feedback" id="newAbbrvError"></div>
+                            </div>
+                            <div class="mb-4">
+                                {{ form.max_classes.label(class="form-label fw-bold") }}
+                                <div class="d-flex align-items-center mb-2">
+                                    <input type="range" class="form-range flex-grow-1 me-3" id="newMaxClasses" min="1" max="10" step="1" value="4">
+                                    <span class="slider-value" id="newMaxClassesValue">4</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" id="addBranchBtn">Add Branch</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Confirm Delete</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete branch <strong id="confirmBranchName"></strong>?</p>
+                        <p class="text-danger"><strong>Warning:</strong> This action cannot be undone and may affect related data (coaches, schedules, etc.).</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Branch</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/branch.js') }}"></script>
+{% endblock %}

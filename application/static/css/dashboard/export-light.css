@@ -1,0 +1,56 @@
+main,.main,.content-wrapper { overflow:visible!important; position:relative; }
+.header-banner { position:sticky!important; top:0; z-index:3000; }
+
+/* ===== Export Light Mode ===== */
+.export-light {
+  background:#fff!important;
+  color:#000!important;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+  font-family:inherit;
+}
+.export-light th,
+.export-light td {
+  color:#000!important;
+  text-shadow:none!important;
+  border-color:#000!important;
+  border-width:1px!important;
+  border-style:solid!important;
+}
+.export-light td:not(.session-cell){ background:#fff!important; }
+.export-light thead th {
+  background:#f4f7fa!important;
+  font-weight:600;
+}
+.export-light td.session-cell {
+  color:#000!important;
+  text-shadow:none!important;
+  box-shadow:none!important;
+  border:1px solid #000!important;
+  position:relative;
+  overflow:hidden;
+  border-radius:8px!important;
+}
+.export-light td.session-cell::after {
+  box-shadow:none!important;
+  background:transparent!important;
+  border-radius:inherit;
+}
+.export-light td.session-cell span,
+.export-light td.session-cell * { color:#000!important; }
+.export-light .timetable-table {
+  border-collapse:collapse!important;
+  border:2px solid #000!important;
+}
+.export-light .timetable-table thead tr th { border-bottom:2px solid #000!important; }
+.export-light .timetable-table th,
+.export-light .timetable-table td { box-shadow:none!important; }
+.export-light td.session-cell.L1,
+.export-light td.session-cell.L2,
+.export-light td.session-cell.L3,
+.export-light td.session-cell.L4,
+.export-light td.session-cell.Flexi,
+.export-light td.session-cell.Bubbly,
+.export-light td.session-cell.Jolly,
+.export-light td.session-cell.Tots,
+.export-light td.session-cell.Lively { filter:saturate(1.05) brightness(.97); }

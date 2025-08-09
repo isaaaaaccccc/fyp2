@@ -1,0 +1,308 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+
+<!-- Theme tokens (CSS variables, gradients, shadows…) -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/tokens.css') }}">
+
+<!-- Global / base resets, typography, scrollbars… -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/utilities.css') }}">
+
+<!-- Layout containers & grids -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/layout.css') }}">
+
+<!-- Core component styles -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/header.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/header-tabs.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/buttons.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/sections.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/chart-export-buttons.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/chart-actions.css') }}">
+
+<!-- Dashboard widgets -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/kpi-cards.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/charts.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/matrix.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/timetable.css') }}">
+
+<!-- Overlays, off-canvas & modals -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/offcanvas.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/download-modal.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/components/scroll-to-top.css') }}">
+
+<!-- Export / print light theme -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/export-light.css') }}">
+
+<!-- Responsive overrides -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard/responsive.css') }}">
+
+<!-- Third-party libraries -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<div class="page animate__animated animate__fadeIn">
+  <!-- ===== Header ===== -->
+  <div class="header-banner mb-3 d-flex align-items-center">
+    <h1 class="m-0 flex-grow-1 text-center" data-title="BearyFun Gym Timetable Application">
+      BearyFun Gym Timetable Application
+    </h1>
+
+    <!-- Section tabs -->
+    <div class="header-tabs" id="header-tabs">
+      <button class="hdr-tab active" data-target="kpi-section">KPI</button>
+      <button class="hdr-tab" data-target="charts-section">Analytics</button>
+      <button class="hdr-tab" data-target="timetable-section">Timetable</button>
+    </div>
+
+    <!-- Filter btn -->
+    <button id="filter-toggle-btn" class="btn-action ms-auto" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#filters-pane" aria-controls="filters-pane">
+      <i class="bi bi-funnel-fill"></i><span>Filters</span>
+      <span id="filter-badge" class="d-none"></span>
+    </button>
+  </div>
+
+  <!-- ===== KPI Cards ===== -->
+  <div id="kpi-section" class="section-container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">KPI Cards</h3>
+      <button id="toggle-kpi" class="btn-action" data-bs-toggle="tooltip" title="Highlight KPI area">
+        Toggle KPIs
+      </button>
+    </div>
+    <div id="kpi-cards" class="d-flex flex-wrap justify-content-center gap-3" aria-live="polite"></div>
+  </div>
+
+  <!-- ===== Analytics ===== -->
+  <div id="charts-section" class="section-container full-width-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Analytics</h3>
+      <div class="d-flex gap-2">
+        <button id="toggle-analytics" class="btn-action" data-bs-toggle="tooltip" title="Highlight analytics area">Toggle Analytics</button>
+        <button id="export-stats" class="btn-action" data-variant="secondary" disabled title="Export session summary to Excel">Export Stats</button>
+        <button id="export-all-charts" class="btn-action" data-variant="secondary" title="Download all charts as PNG">Export All Charts</button>
+      </div>
+    </div>
+
+    <div id="charts-content" class="charts-grid two-col">
+      <!-- 1 - Coach Workload -->
+      <div class="chart-box">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 class="text-center text-light mb-1">Coach Workload</h6>
+        <canvas id="coach-workload"></canvas>
+      </div>
+
+      <!-- 2 - Coach Performance (Radar) -->
+      <div class="chart-box">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 class="text-center text-light mb-1">Coach Performance</h6>
+        <canvas id="coach-performance-radar"></canvas>
+      </div>
+
+      <!-- 3 - Sessions / Day -->
+      <div class="chart-box">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 id="day-chart-title" class="text-center text-light mb-1"></h6>
+        <canvas id="sessions-per-day"></canvas>
+      </div>
+
+      <!-- 4 - Sessions / Course -->
+      <div class="chart-box">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 id="course-chart-title" class="text-center text-light mb-1"></h6>
+        <canvas id="sessions-per-course"></canvas>
+      </div>
+
+      <!-- 5 - Sessions / Branch -->
+      <div class="chart-box">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 class="text-center text-light mb-1">Sessions per Branch</h6>
+        <canvas id="sessions-per-branch"></canvas>
+      </div>
+
+      <!-- 6 - Matrix (Day × Time Slot) -->
+      <div class="chart-box full-width">
+        <div class="chart-actions">
+          <button class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom chart">
+            <i class="bi bi-search"></i>
+          </button>
+          <button class="btn-chart dl-btn" data-bs-toggle="tooltip" title="Download PNG">
+            <i class="bi bi-download"></i>
+          </button>
+        </div>
+        <h6 class="text-center text-light mb-1">Sessions by Day &amp; Time Slot</h6>
+        <div id="sessions-matrix-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Timetable ===== -->
+  <div id="timetable-section" class="section-container">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h3 class="mb-0">Branch Timetable</h3>
+      <div class="d-flex gap-2">
+        <button id="toggle-timetable" class="btn-action" data-bs-toggle="tooltip" title="Highlight timetable area">Toggle Timetable</button>
+        <button id="download-full" class="btn-action" data-variant="secondary" data-bs-toggle="modal" data-bs-target="#downloadModal" title="Download full timetable">Export Full</button>
+        <button id="export-coaches" class="btn-action" data-variant="secondary" disabled data-bs-toggle="modal" data-bs-target="#downloadModal" title="Download each coach's timetable">Export All Coaches</button>
+        <button id="zoom-timetable" class="btn-chart zoom-btn" data-bs-toggle="tooltip" title="Zoom timetable"><i class="bi bi-search"></i></button>
+      </div>
+    </div>
+
+    <!-- Branch pager -->
+    <div class="timetable-pager d-flex align-items-center gap-2 mb-3" id="timetable-pager" style="display:none;">
+      <button class="btn-icon" id="tt-prev-branch" title="Previous Branch"><i class="bi bi-chevron-left"></i></button>
+      <select id="timetable-branch-select" class="form-select form-select-sm" style="max-width:240px;"></select>
+      <button class="btn-icon" id="tt-next-branch" title="Next Branch"><i class="bi bi-chevron-right"></i></button>
+      <span id="tt-branch-counter" class="text-light small ms-2"></span>
+    </div>
+
+    <div id="timetable-wrapper"><div id="timetable-container"></div></div>
+    <div class="mt-3"><h6 class="text-light">Class Color Legend:</h6><div id="class-legend" class="d-flex flex-wrap gap-2"></div></div>
+  </div>
+
+  <!-- ===== Off-canvas Filters ===== -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="filters-pane" aria-labelledby="filtersLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="filtersLabel">Filters</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div id="active-filters" class="d-flex flex-wrap gap-2 mb-3"></div>
+      <div id="filters" class="vstack gap-3">
+        <div>
+          <label for="day-filter" class="form-label mb-1">Filter by Day:</label>
+          <select id="day-filter" class="form-select form-select-sm">
+            {% for d in ['All','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] %}
+              <option value="{{ d }}">{{ d }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label for="tt-branch-select" class="form-label mb-1">Select Branch:</label>
+          <select id="tt-branch-select" class="form-select form-select-sm"><option value="All">All</option></select>
+        </div>
+        <div>
+          <label for="class-filter" class="form-label mb-1">Filter by Class:</label>
+          <select id="class-filter" class="form-select form-select-sm"></select>
+        </div>
+        <div>
+          <label for="coach-filter" class="form-label mb-1">Filter by Coach:</label>
+          <select id="coach-filter" class="form-select form-select-sm"></select>
+        </div>
+        <div>
+          <label for="time-filter" class="form-label mb-1">Filter by Time Slot:</label>
+          <select id="time-filter" class="form-select form-select-sm">
+            <option value="All">All</option>
+            <option value="Morning">Morning (8–12)</option>
+            <option value="Afternoon">Afternoon (12–19)</option>
+          </select>
+        </div>
+        <div class="row row-cols-2 g-2 mt-2">
+          <div class="col">
+            <button id="auto-time-btn" class="btn-action w-100" data-variant="minimal">Apply Current Time Slot</button>
+          </div>
+          <div class="col">
+            <button id="clear-filters-btn" class="btn-action w-100" data-variant="minimal">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Download Modal ===== -->
+  <div class="modal fade" id="downloadModal" tabindex="-1" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="downloadModalLabel">Select Download Format</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="mb-4 fs-5">Choose a format to download the timetable:</p>
+          <div class="d-flex flex-wrap justify-content-center gap-3">
+            <div class="download-choice" id="download-png-btn"   data-format="png" role="button">
+              <div class="dl-icon bi bi-filetype-png"></div><span class="dl-label">PNG</span>
+            </div>
+            <div class="download-choice" id="download-excel-btn" data-format="excel" role="button">
+              <div class="dl-icon bi bi-file-earmark-spreadsheet"></div><span class="dl-label">Excel</span>
+            </div>
+            <div class="download-choice" id="download-pdf-btn"   data-format="pdf" role="button">
+              <div class="dl-icon bi bi-file-earmark-pdf"></div><span class="dl-label">PDF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Scroll-to-top ===== -->
+  <button id="scrollToTopBtn" title="Back to top"><i class="bi bi-arrow-up-short"></i></button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<!-- 3rd-party libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- small patches & standalone modules -->
+<script src="{{ url_for('static', filename='js/dashboard/patchCanvas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard/downloads.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard/uiToggles.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard/headerTabs.js') }}"></script>
+
+<!-- Update selectors in the modules if needed -->
+<script type="module" src="{{ url_for('static', filename='js/dashboard/exportCharts.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/dashboard/zoomCharts.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/dashboard/zoomTimetable.js') }}"></script>
+
+<!-- main dashboard logic -->
+<script type="module" src="{{ url_for('static', filename='js/dashboard/dashboard.js') }}"></script>
+{% endblock %}

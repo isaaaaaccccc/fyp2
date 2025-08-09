@@ -1,0 +1,38 @@
+.matrix-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:.72rem;
+  background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.01));
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+}
+.matrix-table th,
+.matrix-table td {
+  padding:.55rem .6rem;
+  border:1px solid rgba(255,255,255,.05);
+  text-align:center;
+  line-height:1.2;
+}
+.matrix-table th {
+  background:linear-gradient(120deg,rgba(255,255,255,.17),rgba(255,255,255,.05));
+  font-weight:600;
+  letter-spacing:.45px;
+  text-transform:uppercase;
+  font-size:.62rem;
+  color:var(--color-text);
+}
+.matrix-table tbody tr:nth-child(even) td { background:rgba(255,255,255,.02); }
+.matrix-table td {
+  font-weight:600;
+  color:#d0d5de;
+  position:relative;
+  transition:background var(--trans-fast), color var(--trans-fast);
+}
+.matrix-table td:hover {
+  background:linear-gradient(135deg,rgba(var(--color-accent-rgb), .28),rgba(var(--color-accent-rgb), .08));
+  color:#fff;
+  z-index:2;
+}

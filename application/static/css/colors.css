@@ -1,0 +1,131 @@
+:root {
+    --header-color: #dbe3ee;
+    --tots-color: #d9d2e9;
+    --jolly-color: #d9d2e9; 
+    --bubbly-color: #f4cccc;
+    --lively-color: #fff2cc;
+    --flexi-color: #d9ead3;
+    --L1-color: #9fc5e8;
+    --L2-color: #fce5cd;
+    --L3-color: #8e7cc3;
+    --L4-color: #f6b26b;
+    --free-color: #d0ffa3;
+    --advance-color: #90ffff;
+}
+.btn-orange {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #ff851b;
+    --bs-btn-border-color: #ff851b;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #ae6628;
+    --bs-btn-hover-border-color: #ae6628;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #9a5b24;
+    --bs-btn-active-border-color: #9a5b24;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #ff851b;
+    --bs-btn-disabled-border-color: #ff851b;
+}
+
+.btn-indigo {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #450385;
+    --bs-btn-border-color: #450385;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #3c0473;
+    --bs-btn-hover-border-color: #3c0473;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #38046c;
+    --bs-btn-active-border-color: #38046c;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #450385;
+    --bs-btn-disabled-border-color: #450385;
+}
+
+.btn-select {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: rgba(0,0,0,0);
+    --bs-btn-border-color: rgba(0,0,0,0);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgba(0,0,0,0);
+    --bs-btn-hover-border-color: rgba(0,0,0,0);
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #450385;
+    --bs-btn-active-border-color: #450385;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #450385;
+    --bs-btn-disabled-border-color: #450385;
+}
+
+.btn-select.btn-danger {
+  --bs-btn-bg: hsl(355, 35%, 25%);
+  --bs-btn-color: #fff;
+  --bs-btn-hover-bg: #b02a37;
+  --bs-btn-active-bg: #dc3545;
+  --bs-btn-border-color: #dc3545;
+  --bs-btn-hover-border-color: #b02a37;
+  --bs-btn-active-border-color: #842029;
+}
+
+.btn-select.btn-success{
+    --bs-btn-bg: hsl(152, 35%, 25%);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-bg: #146c43;
+    --bs-btn-active-bg: #198754;
+    --bs-btn-border-color: #198754;
+    --bs-btn-hover-border-color: #146c43;
+    --bs-btn-active-border-color: #0f5132;
+}
+
+
+/* Level Colors */
+
+.L1 {
+    background-color: var(--L1-color);
+}
+
+.L2 {
+    background-color: var(--L2-color);
+}
+
+.L3 {
+    background-color: var(--L3-color);
+}
+
+.L4 {
+    background-color: var(--L4-color);
+}
+
+.Tots {
+    background-color: var(--tots-color);
+}
+
+.Jolly {
+    background-color: var(--jolly-color);
+}
+
+.Bubbly {
+    background-color: var(--bubbly-color);
+}
+
+.Lively {
+    background-color: var(--lively-color);
+}
+
+.Flexi {
+    background-color: var(--flexi-color);
+}
+
+.Free {
+    background-color: var(--free-color);
+}
+
+.Advance {
+    background-color: var(--advance-color);
+}

@@ -1,0 +1,55 @@
+/* ================= LAYOUT (Stable Scroll + Sticky Header) ================= */
+
+:root {
+  --hdr-h: 80px; /* adjust after you see real height */
+}
+
+/* Let the BODY scroll normally */
+html, body {
+  height: 100%;
+  overflow-y: auto;
+  margin: 0;
+}
+
+/* Main width rules you already had */
+main.container,
+.content-wrapper {
+  max-width: 98vw !important;
+  width: 100%;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+/* Push content down to clear fixed header */
+.content-wrapper {
+  padding-top: var(--hdr-h);
+  padding-bottom: 3rem;
+}
+
+/* Make the header fixed so it never scrolls */
+.header-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  background: var(--color-bg, #0f1115);
+  box-shadow: 0 2px 8px rgba(0,0,0,.35);
+}
+
+/* Sections just stack; they can overflow naturally */
+.section-container {
+  margin-bottom: 2rem;
+}
+
+/* When Bootstrap opens modals/offcanvas it toggles classes on body.
+   Keep scrolling allowed. */
+body.modal-open,
+body.offcanvas-open {
+  overflow: auto;
+}
+
+/* Optional: visible scrollbar styling */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.25); border-radius: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,.05); }

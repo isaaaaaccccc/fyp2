@@ -1,0 +1,11 @@
+@media (max-width:640px){
+  .header-banner {
+    flex-direction:column;
+    align-items:flex-start;
+    gap:.9rem;
+  }
+  .header-banner .btn-action { order:2; width:100%; }
+  #kpi-cards .card { flex:1 1 100%; }
+  .chart-box { min-height:250px; }
+  .offcanvas { width:100%!important; }
+}

@@ -1,0 +1,43 @@
+.glass {
+  background:var(--color-panel);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  border:1px solid var(--color-border);
+}
+.fade-in { animation:fadeIn .6s ease forwards; opacity:0; }
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+:focus-visible {
+  outline:2px solid var(--color-accent);
+  outline-offset:2px;
+  border-radius:4px;
+}
+.choices__list--dropdown .choices__item.is-selected { display:none; }
+#export-toast-host > div {
+  font-family:inherit;
+  border-radius:var(--radius-sm)!important;
+  letter-spacing:.3px;
+}
+.separator {
+  height:1px;
+  width:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);
+  margin:1rem 0;
+}
+
+body:has(#sidebar.close) {
+  grid-template-columns:60px 1fr;
+}
+body:has(#sidebar.close) .content-wrapper,
+body:has(#sidebar.close) main.container {
+  max-width:98vw!important;
+  padding:0 1rem;
+}
+body:has(#sidebar.close) .charts-grid { grid-template-columns:repeat(3,1fr); }
+body:has(#sidebar.close) #kpi-cards .card {
+  max-width:260px;
+  flex:1 1 240px;
+}

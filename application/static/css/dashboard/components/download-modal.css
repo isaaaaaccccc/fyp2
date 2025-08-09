@@ -1,0 +1,87 @@
+#downloadModal .download-choice {
+  flex:1 1 0;
+  min-width:140px;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  align-items:center;
+  justify-content:center;
+  padding:1.1rem .75rem .95rem;
+  border-radius:18px;
+  background:linear-gradient(150deg,#1e2731,#161c23 60%,#13171c);
+  border:1px solid rgba(255,255,255,.12);
+  color:#cfd3d9;
+  font-size:.7rem;
+  font-weight:600;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  position:relative;
+  cursor:pointer;
+  transition:transform .45s cubic-bezier(.22,.9,.43,1),border-color var(--trans-fast),box-shadow var(--trans-fast),background .6s ease;
+}
+#downloadModal .download-choice::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 30%,rgba(var(--color-accent-rgb),.18),transparent 70%);
+  opacity:0;
+  transition:opacity .6s ease;
+  border-radius:inherit;
+  pointer-events:none;
+}
+#downloadModal .download-choice:hover {
+  transform:translateY(-6px);
+  border-color:rgba(var(--color-accent-rgb), .55);
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.65),0 0 0 2px rgba(var(--color-accent-rgb), .28);
+}
+#downloadModal .download-choice:hover::before { opacity:1; }
+#downloadModal .download-choice:active { transform:translateY(-2px); }
+#downloadModal .download-choice .dl-label {
+  font-size:.65rem;
+  font-weight:600;
+  letter-spacing:.5px;
+}
+#downloadModal .download-choice .dl-icon {
+  font-size:1.8rem;
+  line-height:1;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));
+  transition:text-shadow var(--trans-fast);
+}
+.download-choice[data-format="png"]   { --color-format: var(--color-accent); }
+.download-choice[data-format="excel"] { --color-format: var(--color-success); }
+.download-choice[data-format="pdf"]   { --color-format: var(--color-danger); }
+.download-choice[data-format] .dl-icon { color:var(--color-format); }
+.download-choice:hover .dl-icon {
+  text-shadow:0 0 6px var(--color-format),0 0 14px var(--color-format);
+}
+#downloadModal .btn {
+  font-size:.8rem;
+  font-weight:600;
+  border-radius:var(--radius-md);
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+#downloadModal .btn-outline-primary { border-color:var(--color-accent); color:var(--color-accent); }
+#downloadModal .btn-outline-primary:hover {
+  background:var(--color-accent); color:#fff;
+  box-shadow:0 4px 14px -3px rgba(var(--color-accent-rgb), .55);
+}
+#downloadModal .btn-outline-success { border-color:var(--color-success); color:var(--color-success); }
+#downloadModal .btn-outline-success:hover {
+  background:var(--color-success); color:#0b141a;
+  box-shadow:0 4px 14px -3px rgba(64,220,165,.55);
+}
+#downloadModal .btn-outline-danger { border-color:var(--color-danger); color:var(--color-danger); }
+#downloadModal .btn-outline-danger:hover {
+  background:var(--color-danger); color:#fff;
+  box-shadow:0 4px 14px -3px rgba(255,77,97,.55);
+}
+.modal-content.bg-dark.text-light {
+  background:linear-gradient(140deg,#182028,#12171d 70%);
+  border:1px solid var(--color-border);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-radius:var(--radius-lg);
+}
+.modal-header { border-bottom:1px solid var(--color-border); }
+

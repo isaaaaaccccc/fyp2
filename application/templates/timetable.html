@@ -1,0 +1,348 @@
+
+{% extends "layout.html" %}
+{% block head %}
+<link rel=stylesheet href="{{ url_for('static', filename='css/timetable.css') }}">
+<title>Timetable</title>
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-column h-100">
+        <h1 class="text-center mb-3">Timetable Manager</h1>
+
+
+
+        <div class="bg-light rounded p-3 mb-3">
+            <h4 class="text-dark">Control Panel</h4>
+            <div class="row">
+                <div class="mt-3 collapse" id="collapseConfig">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Configuration Options
+                            </h5>
+                            <form>
+                                <div class="row gap-3">
+                                    <div class="col-12 row">
+                                        <div class="col-md-6">
+                                            <h6>Daily Limits</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekend_daily_limit.label(class="form-label") }}
+                                                {{ configForm.weekend_daily_limit(class="form-control", data_description=configForm.weekend_daily_limit.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekday_daily_limit.label(class="form-label") }}
+                                                {{ configForm.weekday_daily_limit(class="form-control", data_description=configForm.weekday_daily_limit.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekend_daily_hours.label(class="form-label") }}
+                                                {{ configForm.weekend_daily_hours(class="form-control", data_description=configForm.weekend_daily_hours.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekday_daily_hours.label(class="form-label") }}
+                                                {{ configForm.weekday_daily_hours(class="form-control", data_description=configForm.weekday_daily_hours.description) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Weekly Limits</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.full_time_weekly_max.label(class="form-label") }}
+                                                {{ configForm.full_time_weekly_max(class="form-control", data_description=configForm.full_time_weekly_max.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.part_time_weekly_max.label(class="form-label") }}
+                                                {{ configForm.part_time_weekly_max(class="form-control", data_description=configForm.part_time_weekly_max.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.manager_weekly_max.label(class="form-label") }}
+                                                {{ configForm.manager_weekly_max(class="form-control", data_description=configForm.manager_weekly_max.description) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 row">
+                                        <div class="col-md-6">
+                                            <h6>Class Management Rules</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.consecutive_limit.label(class="form-label") }}
+                                                {{ configForm.consecutive_limit(class="form-control", data_description=configForm.consecutive_limit.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.min_break_minutes.label(class="form-label") }}
+                                                {{ configForm.min_break_minutes(class="form-control", data_description=configForm.min_break_minutes.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.level_merge_distance.label(class="form-label") }}
+                                                {{ configForm.level_merge_distance(class="form-control", data_description=configForm.level_merge_distance.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.min_merge_size.label(class="form-label") }}
+                                                {{ configForm.min_merge_size(class="form-control", data_description=configForm.min_merge_size.description) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Algorithm Behaviour</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.max_iterations.label(class="form-label") }}
+                                                {{ configForm.max_iterations(class="form-control", data_description=configForm.max_iterations.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.shuffle_interval.label(class="form-label") }}
+                                                {{ configForm.shuffle_interval(class="form-control", data_description=configForm.shuffle_interval.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.max_assignment_attempts.label(class="form-label") }}
+                                                {{ configForm.max_assignment_attempts(class="form-control", data_description=configForm.max_assignment_attempts.description) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 row">
+                                        <div class="col-md-6">
+                                            <h6>Scoring Weights</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekend_bias.label(class="form-label") }}
+                                                {{ configForm.weekend_bias(class="form-control", data_description=configForm.weekend_bias.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.weekday_bias.label(class="form-label") }}
+                                                {{ configForm.weekday_bias(class="form-control", data_description=configForm.weekday_bias.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.underutilized_coach_bonus.label(class="form-label") }}
+                                                {{ configForm.underutilized_coach_bonus(class="form-control", data_description=configForm.underutilized_coach_bonus.description) }}
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                                {{ configForm.no_turnaround_bonus.label(class="form-label") }}
+                                                {{ configForm.no_turnaround_bonus(class="form-control", data_description=configForm.no_turnaround_bonus.description) }}
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                                {{ configForm.diverse_class_bonus.label(class="form-label") }}
+                                                {{ configForm.diverse_class_bonus(class="form-control", data_description=configForm.diverse_class_bonus.description) }}
+                                            </div>
+                                            
+                                            <div class="form-group mb-3">
+                                                {{ configForm.same_program_back_to_back_penalty.label(class="form-label") }}
+                                                {{ configForm.same_program_back_to_back_penalty(class="form-control", data_description=configForm.same_program_back_to_back_penalty.description) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <h6>Priority Weights</h6>
+                                            <div class="form-group mb-3">
+                                                {{ configForm.scarcity_weight.label(class="form-label") }}
+                                                {{ configForm.scarcity_weight(class="form-control", data_description=configForm.scarcity_weight.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.complexity_weight.label(class="form-label") }}
+                                                {{ configForm.complexity_weight(class="form-control", data_description=configForm.complexity_weight.description) }}
+                                            </div>
+
+                                            <div class="form-group mb-3">
+                                                {{ configForm.size_weight.label(class="form-label") }}
+                                                {{ configForm.size_weight(class="form-control", data_description=configForm.size_weight.description) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 justify-content-end align-items-center mt-3">
+                    <button id="saveBtn" class="btn btn-orange">Save</button>
+                    <button id="generateBtn" class="btn btn-indigo">Generate</button>
+                    <button id="config" class="btn btn-warning" data-bs-toggle="collapse" data-bs-target="#collapseConfig" aria-expanded="false" aria-controls="collapseExample">Config</button>
+                </div>
+            </div>
+        </div>
+         
+        <!-- Branch Filters to show only 1 branch timetable at a time -->
+        <div id="branchSelectorContainer" class="mb-3"></div>
+
+        <!-- Spare capacity container -->
+        <div id="spareCapacityContainer" class="spare-capacity-container"></div>
+
+        <!-- Timetable Container -->
+        <div id="timetableDiv" class="h-75"></div>
+
+        <div id="deleteZone" class="delete-zone">🗑️</div>
+    </div>
+
+    <!-- Add Coach Modal -->
+    <div class="modal fade" id="addCoachModal" tabindex="-1" aria-labelledby="addCoachModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCoachModalLabel">Add Coach to Branch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCoachForm">
+                        <input type="hidden" id="coachBranchInput" name="branch" value="">
+                        
+                        <div class="mb-3">
+                            <label for="coachDaySelect" class="form-label">Day</label>
+                            <select id="coachDaySelect" class="form-select" required>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="coachSelect" class="form-label">Select Coach</label>
+                            <select id="coachSelect" class="form-select" required>
+                                <option value="">Loading coaches...</option>
+                            </select>
+                            <small class="text-muted">Select a coach from the database</small>
+                        </div>
+
+                        <div id="noCoachesAlert" class="alert alert-warning d-none">
+                            No coaches are available in the database or all coaches are already assigned to this branch.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="addCoachSubmitBtn" class="btn btn-primary">Add Coach</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Class Modal -->
+    <div class="modal fade" id="addClassModal" tabindex="-1" aria-labelledby="addClassModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addClassModalLabel">Add New Class</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addClassForm">
+                        <input type="hidden" id="classBranchInput" name="branch" value="">
+                        
+                        <div class="mb-3">
+                            <label for="classDaySelect" class="form-label">Day</label>
+                            <select id="classDaySelect" class="form-select" required>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="classCoachSelect" class="form-label">Coach</label>
+                            <select id="classCoachSelect" class="form-select" required>
+                                <!-- Will be populated dynamically based on branch -->
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="levelSelect" class="form-label">Class Level</label>
+                            <select id="levelSelect" class="form-select" required>
+                                <option value="Tots">Tots</option>
+                                <option value="Jolly">Jolly</option>
+                                <option value="Bubbly">Bubbly</option>
+                                <option value="Lively">Lively</option>
+                                <option value="Flexi">Flexi</option>
+                                <option value="L1">L1</option>
+                                <option value="L2">L2</option>
+                                <option value="L3">L3</option>
+                                <option value="L4">L4</option>
+                                <option value="Advance">Advance</option>
+                                <option value="Free">Free</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="startTimeSelect" class="form-label">Start Time</label>
+                            <select id="startTimeSelect" class="form-select" required>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="durationSelect" class="form-label">Duration</label>
+                            <select id="durationSelect" class="form-select" required>
+                                <option value="2">1 hour (2 slots)</option>
+                                <option value="3">1.5 hours (3 slots)</option>
+                                <option value="4">2 hours (4 slots)</option>
+                            </select>
+                        </div>
+                        
+                        <div id="availabilityFeedback" class="alert alert-info mb-3 d-none">
+                            <!-- Will show feedback about availability -->
+                        </div>
+                        
+                        <div id="validationErrors" class="alert alert-danger mb-3 d-none">
+                            <!-- Will show validation errors -->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="checkAvailabilityBtn" class="btn btn-info">Check Availability</button>
+                    <button type="button" id="addClassSubmitBtn" class="btn btn-primary">Add Class</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove Coach Modal -->
+    <div class="modal fade" id="removeCoachModal" tabindex="-1" aria-labelledby="removeCoachModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeCoachModalLabel">Remove Coach</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="removeCoachForm">
+                        <input type="hidden" id="removeCoachBranchInput" name="branch" value="">
+                        <input type="hidden" id="removeCoachDayInput" name="day" value="">
+                        
+                        <div class="mb-3">
+                            <label for="removeCoachSelect" class="form-label">Select Coach to Remove</label>
+                            <select id="removeCoachSelect" class="form-select" required>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        
+                        <div id="removeCoachWarning" class="alert alert-warning mt-3">
+                            <strong>Warning!</strong> Removing a coach will delete all classes assigned to them for this day.
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="removeCoachSubmitBtn" class="btn btn-danger">Remove Coach</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/timetable.js') }}"></script>
+{% endblock %}

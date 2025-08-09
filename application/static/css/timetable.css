@@ -1,0 +1,336 @@
+#timetableDiv table {
+    .separator {
+        border-right: 3px solid #000000 !important;
+    }
+
+    /* Time slot cell */ 
+    td:first-child {
+        /* position: sticky;
+        left: 0; */
+        width: 160px;
+        min-width: 160px;
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+}
+
+#timetableDiv table > thead {
+    text-align: center;
+
+    th {
+        background-color: var(--header-color);
+    }
+
+    .day-header {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    
+    .coach-header {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+}
+
+#timetableDiv table > tbody {
+    .class-cell {
+        z-index: 0;
+        font-size: 0.8rem;
+        text-align: center;
+        padding: 0;
+        min-width: 100px;
+        height: 40px;
+    }
+
+    .class-cell.drag-valid {
+        background-color: #e8f5e8;
+        border: 2px dashed #4caf50;
+    }
+
+    .class-cell.drag-invalid {
+        background-color: #ffebee;
+        border: 2px dashed #f44336;
+    }
+
+    .class-block {
+        position: relative;
+        z-index: 10;
+        color: black;
+        border-radius: 8px;
+        margin: 8px;
+        font-weight: 500;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: move;
+        user-select: none;
+        transition: all 0.2s ease;
+        opacity: 1;
+    }
+    
+    .class-block:hover {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+    
+    .class-block.dragging {
+        opacity: 0.5;
+        transform: rotate(5deg);
+    }
+}
+
+.delete-zone {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    background-color: #f44336;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+
+    visibility: hidden;
+}
+
+.delete-zone.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===== CAPACITY SECTION STYLES ===== */
+
+/* Main Layout */
+.spare-capacity-container {
+    margin-bottom: 1rem;
+}
+
+.capacity-details {
+    margin-bottom: 15px;
+    border: 1px solid #495057;
+    border-radius: 0.25rem;
+    background-color: #212529;
+    color: #fff;
+    padding: 15px;
+}
+
+.capacity-list {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Badge Styles */
+.capacity-badge {
+    margin: 3px;
+    display: inline-block;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.5rem;
+}
+
+.week-utilization-badge {
+    font-size: 0.9rem;
+    margin-left: 20px;  /* Add more spacing from the title */
+    font-weight: 500;
+}
+
+.badge-success {
+    background-color: #198754;
+    color: #fff;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Interactive Elements */
+.clickable-badge {
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.clickable-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.clickable-badge:active {
+    transform: scale(0.98);
+}
+
+/* Headers and Legends */
+.capacity-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.capacity-legend {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 0.75rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Status Indicators */
+.closed-notice {
+    padding: 0.5rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Availability Colors */
+.lunch-break {
+    background-color: #fd7e14;
+    color: #fff;
+}
+
+.high-availability {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.medium-availability {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.low-availability {
+    background-color: #198754;
+    color: #fff;
+}
+
+/* Container Styles */
+.branch-container {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.branch-container:last-child {
+    border-bottom: none;
+}
+
+/* Highlighting with enhanced visibility */
+.highlighted-timeslot {
+    background-color: #49b97f !important;
+    position: relative;
+    z-index: 1;
+    border: 2px solid #2a7a50 !important; /* Add border to highlight cells */
+}
+
+.highlighted-timeslot-time {
+    background-color: #49b97f !important;
+    position: relative;
+    font-weight: bold;
+    border: 2px solid #2a7a50 !important; /* Add border to highlight time cells */
+}
+
+.highlighted-day {
+    background-color: #49b97f !important;
+    color: white !important;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add text shadow for better contrast */
+}
+
+/* Enhanced pulsing effect */
+@keyframes pulse-green {
+    0% { 
+        box-shadow: inset 0 0 0 3px rgba(42, 122, 80, 0.4);
+    }
+    50% { 
+        box-shadow: inset 0 0 0 5px rgba(42, 122, 80, 0.8);
+    }
+    100% { 
+        box-shadow: inset 0 0 0 3px rgba(42, 122, 80, 0.4);
+    }
+}
+
+.highlighted-timeslot {
+    animation: pulse-green 1.2s infinite;
+}
+
+/* Enhanced Uniform Day Separator Styles */
+#timetableDiv table .separator {
+    border-right: 4px solid #000000 !important; /* Uniform thickness */
+}
+
+#timetableDiv table thead .separator {
+    border-right: 4px solid #000000 !important; /* Same thickness for all header separators */
+}
+
+#timetableDiv table tbody td.separator {
+    border-right: 4px solid #000000 !important; /* Same thickness for all body separators */
+}
+
+/* Strong bottom border for day and coach headers */
+#timetableDiv table thead .day-header {
+    border-bottom: 3px solid #000000 !important; /* Thick bottom border for day headers */
+}
+
+#timetableDiv table thead .coach-header {
+    border-bottom: 4px solid #000000 !important; /* Even thicker bottom border for coach headers */
+}
+
+/* Make sure the entire coach row has a thick bottom border */
+#timetableDiv table thead tr:last-child th {
+    border-bottom: 4px solid #000000 !important; /* Uniform thick border under all coach headers */
+}
+
+/* Ensure the time header also has consistent borders */
+#timetableDiv table thead .time-slot.separator {
+    border-right: 4px solid #000000 !important;
+    border-bottom: 4px solid #000000 !important;
+}
+
+/* Parameter description styling */
+.form-text {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+/* Add some spacing between form groups */
+.form-group {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Make the description stand out slightly on hover */
+.form-group:hover .form-text {
+    color: #495057;
+}

@@ -1,0 +1,47 @@
+:root {
+  --color-bg: #0f1115;
+  --color-bg-alt: #161a21;
+  --color-panel: rgba(28,32,40,.72);
+  --color-panel-solid: #1c2028;
+  --color-accent: #4f8cff;
+  --color-accent-rgb: 79,140,255;
+  --color-accent-alt: #ffb347;
+  --color-danger: #ff4d61;
+  --color-warn: #ffbe3d;
+  --color-success: #40dca5;
+  --color-text: #e6e9ef;
+  --color-text-dim: #9aa3b5;
+  --color-border: rgba(255,255,255,0.08);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --trans-fast: 120ms cubic-bezier(.45,.05,.55,.95);
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.5);
+  --shadow-sm: 0 3px 6px -1px rgba(0,0,0,.55), 0 2px 4px -1px rgba(0,0,0,.4);
+  --shadow-md: 0 6px 18px -4px rgba(0,0,0,.55), 0 2px 8px -2px rgba(0,0,0,.4);
+
+  --gradient-accent: linear-gradient(135deg,#4f8cff,#835ef6 55%,#ffb347);
+  --gradient-panel: linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0));
+
+  --chart-height: 360px;
+  --header-height: 88px;
+
+  --glow-box-ring: rgba(var(--color-accent-rgb), .35);
+  --glow-box-soft: rgba(var(--color-accent-rgb), .18);
+  --glow-box-far: rgba(var(--color-accent-rgb), .10);
+
+  /* Header Tabs / Pills */
+  --tabs-gap: .85rem;                /* uniform horizontal gap between all header pills */
+  --tab-font-size: .66rem;
+  --tab-letter-spacing: .55px;
+  --tab-horizontal-pad: 1.55rem;     /* left/right padding for pills */
+  --tab-vertical-pad: .70rem;        /* vertical padding for pills */
+  --tab-min-width: 140px;            /* consistent width */
+  --tab-icon-gap: .5rem;
+  --btn-min-height: 42px;
+}
+@media (min-width:1500px){ :root { --chart-height: 400px; } }

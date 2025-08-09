@@ -1,0 +1,252 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <title>Data Upload - Swimming Coach Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/data_upload.css')}}">
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 class="page-title">Data Upload Center</h1>
+        <p class="page-subtitle">Upload CSV files to update your coaching system data. Select files using the file pickers below.</p>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Upload Summary (shown after successful upload) -->
+    <div class="upload-summary" id="uploadSummary">
+        <h6>
+            <i class="bi bi-check-circle-fill"></i>
+            Upload Completed Successfully!
+        </h6>
+        <ul id="uploadSummaryList">
+            <!-- Dynamically populated with upload results -->
+        </ul>
+    </div>
+
+    <!-- Upload Progress -->
+    <div class="upload-progress" id="uploadProgress">
+        <h6 class="mb-3">
+            <i class="bi bi-upload me-2"></i>
+            Processing Files...
+            <span class="spinner-border spinner-border-sm ms-2" role="status"></span>
+        </h6>
+        <div class="progress mb-2" style="height: 10px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+        </div>
+        <div class="text-center">
+            <small class="text-muted">Please wait while your files are being processed...</small>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+        {{ form.hidden_tag() }}
+
+        <div class="upload-grid">
+            <!-- Branch Config Upload -->
+            <div class="upload-card" id="branch_config_file_card">
+                <div class="upload-status-indicator" id="branch_config_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-building"></i>
+                    Branch Configuration
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="branch_config_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose branch_config.csv file</div>
+                        <div class="upload-subtext">Expected format: branch, max_classes_per_slot</div>
+                        {{ form.branch_config_file(id="branch_config_file") }}
+                        <button type="button" class="cancel-upload-btn" id="branch_config_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="branch_config_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    name,abbrv,max_classes_per_slot<br>
+                    Bukit Batok,BB,4<br>
+                    Choa Chu Kang,CCK,4
+                </div>
+            </div>
+
+            <!-- Level Config Upload -->
+            <div class="upload-card" id="level_config_file_card">
+                <div class="upload-status-indicator" id="level_config_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                    Level Configuration
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="level_config_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose level_config.csv file</div>
+                        <div class="upload-subtext">Expected format: name, alias, max_students, duration</div>
+                        {{ form.level_config_file(id="level_config_file") }}
+                        <button type="button" class="cancel-upload-btn" id="level_config_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="level_config_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    name,alias,max_students,duration<br>  <!-- name is used for the logic in the backend, alias is the display/shortened name -->
+                    BearyTots,Tots,7,2<br>
+                    Jolly,Jolly,9,2
+                </div>
+            </div>
+            
+            <!-- Coaches Upload -->
+            <div class="upload-card" id="coaches_file_card">
+                <div class="upload-status-indicator" id="coaches_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-people"></i>
+                    Coach Information
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="coaches_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose coaches.csv file</div>
+                        <div class="upload-subtext">Expected format: coach_id, coach_name, residential_area, assigned_branch, position, status, etc.</div>
+                        {{ form.coaches_file(id="coaches_file") }}
+                        <button type="button" class="cancel-upload-btn" id="coaches_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="coaches_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    coach_id,coach_name,residential_area,assigned_branch,position,status,BearyTots,Jolly,...<br>
+                    1,Ayuni,Jurong West,BB,Branch Manager,Full time,False,True,...
+                </div>
+            </div>
+            
+            <!-- Availability Upload -->
+            <div class="upload-card" id="availability_file_card">
+                <div class="upload-status-indicator" id="availability_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-calendar-check"></i>
+                    Coach Availability Data
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="availability_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose availability.csv file</div>
+                        <div class="upload-subtext">Expected format: availability_id, coach_id, day, period, available, restriction_reason</div>
+                        {{ form.availability_file(id="availability_file") }}
+                        <button type="button" class="cancel-upload-btn" id="availability_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="availability_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    availability_id,coach_id,day,period,available,restriction_reason<br>
+                    1,1,MON,am,False,full_day_off<br>
+                    2,1,MON,pm,False,full_day_off
+                </div>
+            </div>
+            
+            <!-- Enrollment Upload -->
+            <div class="upload-card" id="enrollment_file_card">
+                <div class="upload-status-indicator" id="enrollment_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-graph-up"></i>
+                    Enrollment Data
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="enrollment_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose enrollment.csv file</div>
+                        <div class="upload-subtext">Expected format: Branch, Level Category Base, Count</div>
+                        {{ form.enrollment_file(id="enrollment_file") }}
+                        <button type="button" class="cancel-upload-btn" id="enrollment_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="enrollment_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    Branch,Level Category Base,Count<br>
+                    BB,Advance,6<br>
+                    CCK,Level_1,12
+                </div>
+            </div>
+
+            <!-- Popular Timeslots Upload -->
+            <div class="upload-card" id="popular_timeslots_file_card">
+                <div class="upload-status-indicator" id="popular_timeslots_file_indicator">
+                    <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <h5>
+                    <i class="bi bi-clock-history"></i>
+                    Popular Timeslots
+                </h5>
+                <div class="file-input-wrapper">
+                    <div class="file-input-custom" id="popular_timeslots_file_wrapper">
+                        <div class="upload-icon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <div class="upload-text">Choose popular_timeslots.csv file</div>
+                        <div class="upload-subtext">Expected format: time_slot, day, level</div>
+                        {{ form.popular_timeslots_file(id="popular_timeslots_file") }}
+                        <button type="button" class="cancel-upload-btn" id="popular_timeslots_file_cancel">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="file-info" id="popular_timeslots_file_info"></div>
+                <div class="csv-sample" title="Click to copy sample format">
+                    <strong>Sample Format (Click to Copy):</strong>
+                    time_slot,day,level<br>
+                    08:30-12:30,WED,Tots<br>
+                    14:00-15:30,SAT,Level_2
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-5">
+            {{ form.submit(class="btn btn-upload btn-lg", id="submitBtn") }}
+            
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/data_upload.js') }}"></script>
+{% endblock %}

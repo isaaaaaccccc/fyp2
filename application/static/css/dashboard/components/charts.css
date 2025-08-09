@@ -1,0 +1,73 @@
+.charts-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:var(--chart-height);
+  gap:1.4rem;
+}
+@media (max-width:1300px){ .charts-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:780px){ .charts-grid { grid-template-columns:1fr; } }
+@media (min-width:1800px){ :root { --chart-height:420px; } }
+
+.chart-box {
+  position:relative;
+  padding:.9rem .95rem 1.1rem;
+  display:flex;
+  flex-direction:column;
+  min-height:280px;
+  height:var(--chart-height);
+  max-height:calc(var(--chart-height) + 50px);
+  background:linear-gradient(155deg,rgba(255,255,255,0.07),rgba(255,255,255,0.015));
+  border:1px solid var(--color-border);
+  border-radius:var(--radius-md);
+  overflow:hidden;
+  isolation:isolate;
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  transition:border-color var(--trans-fast),box-shadow var(--trans-fast),transform .45s cubic-bezier(.22,.9,.43,1),background .6s ease;
+}
+.chart-box::before {
+  content:"";
+  position:absolute;
+  inset:-12% -12%;
+  background:radial-gradient(circle at 50% 55%,rgba(var(--color-accent-rgb), .28),transparent 65%);
+  opacity:0;
+  filter:blur(22px);
+  transition:opacity .5s ease, filter .6s ease;
+  z-index:0;
+  pointer-events:none;
+}
+.chart-box h6,
+.chart-box canvas { position:relative; z-index:1; }
+.chart-box h6 {
+  font-size:.78rem;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  color:var(--color-text-dim);
+  margin:0 0 .45rem;
+  opacity:.9;
+}
+.chart-box canvas {
+  flex:1;
+  width:100%!important;
+  height:100%!important;
+  min-height:220px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));
+  transition:filter .45s ease;
+}
+.chart-box:hover {
+  border-color:rgba(var(--color-accent-rgb), .65);
+  transform:translateY(-6px);
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.7),
+             0 0 0 2px rgba(var(--color-accent-rgb), .35),
+             0 0 14px -2px rgba(var(--color-accent-rgb), .55),
+             0 0 28px -4px rgba(var(--color-accent-rgb), .35);
+  background:linear-gradient(155deg,rgba(255,255,255,0.11),rgba(255,255,255,0.02));
+}
+.chart-box:hover::before {
+  opacity:1;
+  filter:blur(28px);
+}
+.chart-box:hover canvas {
+  filter:drop-shadow(0 0 4px rgba(var(--color-accent-rgb), .55)) drop-shadow(0 4px 10px rgba(0,0,0,.4));
+}
