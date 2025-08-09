@@ -10,4 +10,6 @@ __pycache__/
 *.db
 *.db-journal
 tmp*.*
-dist/
+_internal/
+Frameworks/
+Resources/
